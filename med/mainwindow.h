@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSqlTableModel>
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +18,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QSqlTableModel *patientsModel;
+    QSqlTableModel *studiesModel;
 };
 
 #endif // MAINWINDOW_H

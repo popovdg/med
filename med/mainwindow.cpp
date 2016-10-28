@@ -5,7 +5,6 @@
 #include <QSqlDatabase>
 #include <QDebug>
 #include <QSqlError>
-#include <QSqlTableModel>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -24,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     db.setDatabaseName("med");
     bool ok = db.open();
 
-    QSqlTableModel *patientsModel = new QSqlTableModel(ui->patientsView, db);
+    patientsModel = new QSqlTableModel(ui->patientsView, db);
     patientsModel->setTable("patients");
     patientsModel->setEditStrategy(QSqlTableModel::OnRowChange);
     patientsModel->select();
@@ -35,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->patientsView->setModel(patientsModel);
     ui->patientsView->hideColumn(0);
 
-    QSqlTableModel *studiesModel = new QSqlTableModel(ui->studiesView, db);
+    studiesModel = new QSqlTableModel(ui->studiesView, db);
     studiesModel->setTable("studies");
     studiesModel->setEditStrategy(QSqlTableModel::OnRowChange);
     studiesModel->select();
