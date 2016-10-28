@@ -92,6 +92,17 @@
             </widget>
            </item>
            <item>
+            <widget class="QPushButton" name="pushButton_4">
+             <property name="text">
+              <string>Удалить</string>
+             </property>
+             <property name="icon">
+              <iconset resource="icons.qrc">
+               <normaloff>:/icons/icons/delete.png</normaloff>:/icons/icons/delete.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
             <spacer name="horizontalSpacer_2">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
@@ -135,6 +146,17 @@
              <property name="icon">
               <iconset resource="icons.qrc">
                <normaloff>:/icons/icons/add.png</normaloff>:/icons/icons/add.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_3">
+             <property name="text">
+              <string>Удалить</string>
+             </property>
+             <property name="icon">
+              <iconset resource="icons.qrc">
+               <normaloff>:/icons/icons/delete.png</normaloff>:/icons/icons/delete.png</iconset>
              </property>
             </widget>
            </item>
