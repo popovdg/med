@@ -16,9 +16,10 @@ comment on column patients.weight is 'Вес';
 
 create table if not exists studies
 (
-	patient int references patients (id) match simple on update cascade on delete cascade,
+	patient int not null references patients (id) match simple on update cascade on delete cascade,
 	type character varying not null,
-	date date
+	date date not null,
+	unique(patient, type, date)
 );
 create index on studies (patient);
 
