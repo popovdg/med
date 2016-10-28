@@ -22,6 +22,10 @@
         <property name="text">
          <string>Обновить</string>
         </property>
+        <property name="icon">
+         <iconset resource="icons.qrc">
+          <normaloff>:/icons/icons/refresh.png</normaloff>:/icons/icons/refresh.png</iconset>
+        </property>
        </widget>
       </item>
       <item>
@@ -52,8 +56,15 @@
       </item>
       <item>
        <widget class="QPushButton" name="searchButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>Поиск</string>
+        </property>
+        <property name="icon">
+         <iconset resource="icons.qrc">
+          <normaloff>:/icons/icons/search.png</normaloff>:/icons/icons/search.png</iconset>
         </property>
        </widget>
       </item>
@@ -73,6 +84,10 @@
             <widget class="QPushButton" name="pushButton">
              <property name="text">
               <string>Добавить...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="icons.qrc">
+               <normaloff>:/icons/icons/add.png</normaloff>:/icons/icons/add.png</iconset>
              </property>
             </widget>
            </item>
@@ -111,8 +126,15 @@
           <layout class="QHBoxLayout" name="horizontalLayout_8">
            <item>
             <widget class="QPushButton" name="pushButton_2">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Добавить...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="icons.qrc">
+               <normaloff>:/icons/icons/add.png</normaloff>:/icons/icons/add.png</iconset>
              </property>
             </widget>
            </item>
@@ -147,6 +169,8 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
