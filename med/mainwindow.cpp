@@ -79,6 +79,8 @@ void MainWindow::select_Studies(const QModelIndex &index, const QModelIndex &)
     studiesModel->setFilter("patient="
                             + (index.isValid() ? index.sibling(index.row(), 0).data().toString()
                                                : QString::number(0)));
+    ui->removePersonButton->setEnabled(index.isValid());
+    ui->addStudyButton->setEnabled(index.isValid());
 }
 
 //Фильтрует клиентов по ФИО
@@ -118,6 +120,12 @@ void MainWindow::on_removePersonButton_clicked()
 //Добавляет исследование
 void MainWindow::on_addStudyButton_clicked()
 {
+
+}
+
+//Удаляет выбранное исследование
+void MainWindow::on_removeStudyButton_clicked()
+{
     QMessageBox msgBox(ui->patientsView);
     msgBox.setIcon(QMessageBox::Question);
     msgBox.setText(tr("Вы уверены, что хотите удалить выбранное исследование?"));
@@ -129,10 +137,4 @@ void MainWindow::on_addStudyButton_clicked()
         studiesModel->removeRow(ui->studiesView->currentIndex().row());
         studiesModel->select();
     }
-}
-
-//Удаляет выбранное исследование
-void MainWindow::on_removeStudyButton_clicked()
-{
-
 }
