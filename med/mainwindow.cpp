@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <QDebug>
 #include <QSqlError>
+#include <QMessageBox>
 
 //Конструктор
 MainWindow::MainWindow(QWidget *parent) :
@@ -22,6 +23,17 @@ MainWindow::MainWindow(QWidget *parent) :
     QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
     db.setDatabaseName("med");
     bool ok = db.open();
+
+    if(!ok)
+    {
+        QMessageBox msgBox(this);
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setText(tr("Не удалось подключиться к базе данных!"));
+        msgBox.setInformativeText(tr("Проверьте настройки сервера базы данных"));
+        msgBox.setDetailedText(db.lastError().text());
+        msgBox.exec();
+        exit(0);
+    }
 
     patientsModel = new QSqlTableModel(ui->patientsView, db);
     patientsModel->setTable("patients_view");
@@ -85,21 +97,38 @@ void MainWindow::on_refershButton_clicked()
 //Добавляет клиента
 void MainWindow::on_addPersonButton_clicked()
 {
-
 }
 
 //Удаляет выбранного клиента
 void MainWindow::on_removePersonButton_clicked()
 {
-    patientsModel->removeRow(ui->patientsView->currentIndex().row());
-    patientsModel->select();
+    QMessageBox msgBox(ui->patientsView);
+    msgBox.setIcon(QMessageBox::Question);
+    msgBox.setText(tr("Вы уверены, что хотите удалить выбранного клиента?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    if(msgBox.exec() == QMessageBox::Yes)
+    {
+        patientsModel->removeRow(ui->patientsView->currentIndex().row());
+        patientsModel->select();
+    }
 }
 
 //Добавляет исследование
 void MainWindow::on_addStudyButton_clicked()
 {
-    studiesModel->removeRow(ui->studiesView->currentIndex().row());
-    studiesModel->select();
+    QMessageBox msgBox(ui->patientsView);
+    msgBox.setIcon(QMessageBox::Question);
+    msgBox.setText(tr("Вы уверены, что хотите удалить выбранное исследование?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    if(msgBox.exec() == QMessageBox::Yes)
+    {
+        studiesModel->removeRow(ui->studiesView->currentIndex().row());
+        studiesModel->select();
+    }
 }
 
 //Удаляет выбранное исследование
