@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
     db.setDatabaseName("med");
-    db.open();
+    bool ok = db.open();
 
     patientsModel = new QSqlTableModel(ui->patientsView, db);
     patientsModel->setTable("patients_view");
@@ -91,13 +91,15 @@ void MainWindow::on_addPersonButton_clicked()
 //Удаляет выбранного клиента
 void MainWindow::on_removePersonButton_clicked()
 {
-
+    patientsModel->removeRow(ui->patientsView->currentIndex().row());
+    patientsModel->select();
 }
 
 //Добавляет исследование
 void MainWindow::on_addStudyButton_clicked()
 {
-
+    studiesModel->removeRow(ui->studiesView->currentIndex().row());
+    studiesModel->select();
 }
 
 //Удаляет выбранное исследование
