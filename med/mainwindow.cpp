@@ -44,8 +44,8 @@ MainWindow::MainWindow(QWidget *parent) :
     patientsModel->setHeaderData(1, Qt::Horizontal, tr("ФИО"));
     patientsModel->setHeaderData(2, Qt::Horizontal, tr("Дата рождения"));
     patientsModel->setHeaderData(3, Qt::Horizontal, tr("Пол"));
-    patientsModel->setHeaderData(4, Qt::Horizontal, tr("Вес"));
-    patientsModel->setHeaderData(5, Qt::Horizontal, tr("Возраст"));
+    patientsModel->setHeaderData(4, Qt::Horizontal, tr("Вес, кг"));
+    patientsModel->setHeaderData(5, Qt::Horizontal, tr("Количество полных лет"));
     ui->patientsView->setItemDelegate(new PatientsItemDelegate(ui->patientsView));
     ui->patientsView->setModel(patientsModel);
     ui->patientsView->hideColumn(0);
