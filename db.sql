@@ -4,7 +4,7 @@ create table if not exists patients
 	fio character varying not null,
 	dob date not null,
 	sex boolean,
-	weight int,
+	weight int check (weight > 0),
 	unique (fio, dob)
 );
 create or replace view patients_view as select *, date_part('year', age(dob)) as age from patients;
