@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "patientsitemdelegate.h"
-#include "studiesitemdelegate.h"
 #include <QSplitter>
 #include <QTableView>
 #include <QSqlDatabase>
@@ -64,14 +63,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(
       ui->patientsView->selectionModel(),
-      SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-      SLOT(onPatientSelectionChanged(QItemSelection,QItemSelection))
+      SIGNAL(currentRowChanged(const QModelIndex &, const QModelIndex &)),
+      SLOT(onCurrentPatientChanged(const QModelIndex &, const QModelIndex &))
      );
 
     connect(
       ui->studiesView->selectionModel(),
-      SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-      SLOT(onStudySelectionChanged(const QItemSelection &, const QItemSelection &))
+      SIGNAL(currentRowChanged(const QModelIndex &, const QModelIndex &)),
+      SLOT(onCurrentStudyChanged(const QModelIndex &, const QModelIndex &))
      );
 
     connect(patientsModel, SIGNAL(modelReset()), SLOT(onPatientsReset()));
@@ -85,20 +84,17 @@ MainWindow::~MainWindow()
 }
 
 //Фильтрует исследования для выбранного клиента
-void MainWindow::onPatientSelectionChanged(const QItemSelection &selected, const QItemSelection &)
+void MainWindow::onCurrentPatientChanged(const QModelIndex &current, const QModelIndex &)
 {
-    studiesModel->setFilter("patient="
-                            + (selected.indexes().empty()
-                               ? QString::number(0)
-                               : selected.indexes().at(0).data().toString()));
-    ui->removePatientButton->setDisabled(selected.indexes().empty());
-    ui->addStudyButton->setDisabled(selected.indexes().empty());
+    studiesModel->setFilter("patient=" + current.sibling(current.row(), 0).data().toString());
+    ui->removePatientButton->setEnabled(current.isValid());
+    ui->addStudyButton->setEnabled(current.isValid());
 }
 
 //Активирует кнопку удаления исследования
-void MainWindow::onStudySelectionChanged(const QItemSelection &selected, const QItemSelection &)
+void MainWindow::onCurrentStudyChanged(const QModelIndex &current, const QModelIndex &)
 {
-    ui->removeStudyButton->setDisabled(selected.indexes().empty());
+    ui->removeStudyButton->setEnabled(current.isValid());
 }
 
 //Деактивирует кнопки при изменении модели клиентов

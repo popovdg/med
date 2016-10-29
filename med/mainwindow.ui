@@ -69,7 +69,7 @@
            <item>
             <widget class="QPushButton" name="addPatientButton">
              <property name="text">
-              <string>Добавить...</string>
+              <string>Добавить</string>
              </property>
              <property name="icon">
               <iconset resource="icons.qrc">
@@ -143,7 +143,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Добавить...</string>
+              <string>Добавить</string>
              </property>
              <property name="icon">
               <iconset resource="icons.qrc">
@@ -231,10 +231,6 @@
   </connection>
  </connections>
  <slots>
-  <slot>onPatientSelectionChanged(QitemSelection,QItemSelection)</slot>
   <slot>search(QString)</slot>
-  <slot>onStudySelectionChanged(QItemSelection,QItemSelection)</slot>
-  <slot>onPatientsReset()</slot>
-  <slot>onStudiesReset()</slot>
  </slots>
 </ui>

@@ -22,10 +22,10 @@ public:
 
 private slots:
     /** Фильтрует исследования для выбранного клиента */
-    void onPatientSelectionChanged(const QItemSelection &, const QItemSelection &);
+    void onCurrentPatientChanged(const QModelIndex &, const QModelIndex &);
 
     /** Активирует кнопки при изменении текущего клиента */
-    void onStudySelectionChanged(const QItemSelection &, const QItemSelection &);
+    void onCurrentStudyChanged(const QModelIndex &, const QModelIndex &);
 
     /** Деактивирует кнопки при изменении модели клиентов */
     void onPatientsReset();
