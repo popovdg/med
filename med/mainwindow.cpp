@@ -13,17 +13,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QSplitter *splitter = new QSplitter(this);
-    splitter->setOrientation(Qt::Vertical);
-    splitter->addWidget(ui->patientsBox);
-    splitter->addWidget(ui->studiesBox);
-    splitter->setChildrenCollapsible(false);
-    ui->tableLayout->addWidget(splitter);
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
     db.setDatabaseName("med");
     bool ok = db.open();
-
     if(!ok)
     {
         QMessageBox msgBox(this);
@@ -34,6 +27,13 @@ MainWindow::MainWindow(QWidget *parent) :
         msgBox.exec();
         exit(0);
     }
+
+    QSplitter *splitter = new QSplitter(this);
+    splitter->setOrientation(Qt::Vertical);
+    splitter->addWidget(ui->patientsBox);
+    splitter->addWidget(ui->studiesBox);
+    splitter->setChildrenCollapsible(false);
+    ui->tableLayout->addWidget(splitter);
 
     patientsModel = new QSqlTableModel(ui->patientsView, db);
     patientsModel->setTable("patients_view");
@@ -46,21 +46,17 @@ MainWindow::MainWindow(QWidget *parent) :
     patientsModel->setHeaderData(4, Qt::Horizontal, tr("Вес"));
     patientsModel->setHeaderData(5, Qt::Horizontal, tr("Возраст"));
     ui->patientsView->setModel(patientsModel);
-    ui->patientsView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->patientsView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->patientsView->hideColumn(0);
-    ui->patientsView->selectRow(0);
 
     studiesModel = new QSqlTableModel(ui->studiesView, db);
     studiesModel->setTable("studies");
     studiesModel->setEditStrategy(QSqlTableModel::OnRowChange);
     studiesModel->setSort(2, Qt::DescendingOrder);
+    studiesModel->setFilter("patient=0");
     studiesModel->select();
-    studiesModel->setHeaderData(1, Qt::Horizontal, tr("Тип исследования"));
-    studiesModel->setHeaderData(2, Qt::Horizontal, tr("Дата исследования"));
+    studiesModel->setHeaderData(1, Qt::Horizontal, tr("Тип"));
+    studiesModel->setHeaderData(2, Qt::Horizontal, tr("Дата"));
     ui->studiesView->setModel(studiesModel);
-    ui->studiesView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->studiesView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->studiesView->hideColumn(0);
 
     connect(
@@ -74,6 +70,9 @@ MainWindow::MainWindow(QWidget *parent) :
       SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
       SLOT(onStudySelectionChanged(const QItemSelection &, const QItemSelection &))
      );
+
+    connect(patientsModel, SIGNAL(modelReset()), SLOT(onPatientsReset()));
+    connect(studiesModel, SIGNAL(modelReset()), SLOT(onStudiesReset()));
 }
 
 //Деструктор
@@ -89,14 +88,28 @@ void MainWindow::onPatientSelectionChanged(const QItemSelection &selected, const
                             + (selected.indexes().empty()
                                ? QString::number(0)
                                : selected.indexes().at(0).data().toString()));
-    ui->removePersonButton->setDisabled(selected.indexes().empty());
+    ui->removePatientButton->setDisabled(selected.indexes().empty());
     ui->addStudyButton->setDisabled(selected.indexes().empty());
 }
 
-//
+//Активирует кнопку удаления исследования
 void MainWindow::onStudySelectionChanged(const QItemSelection &selected, const QItemSelection &)
 {
     ui->removeStudyButton->setDisabled(selected.indexes().empty());
+}
+
+//
+void MainWindow::onPatientsReset()
+{
+    ui->removePatientButton->setEnabled(ui->patientsView->selectionModel()->hasSelection());
+    ui->addStudyButton->setEnabled(ui->patientsView->selectionModel()->hasSelection());
+    if(!ui->patientsView->selectionModel()->hasSelection()) studiesModel->setFilter("patient=0");
+}
+
+//
+void MainWindow::onStudiesReset()
+{
+    ui->removeStudyButton->setEnabled(ui->studiesView->selectionModel()->hasSelection());
 }
 
 //Фильтрует клиентов по ФИО
@@ -108,31 +121,10 @@ void MainWindow::search(const QString & string)
 //Обновляет данные из БД
 void MainWindow::on_refershButton_clicked()
 {
+    qApp->setOverrideCursor(Qt::WaitCursor);
     patientsModel->select();
     studiesModel->select();
-}
-
-//Добавляет клиента
-void MainWindow::on_addPersonButton_clicked()
-{
-
-}
-
-//Удаляет выбранного клиента
-void MainWindow::on_removePersonButton_clicked()
-{
-    QMessageBox msgBox(ui->patientsView);
-    msgBox.setIcon(QMessageBox::Question);
-    msgBox.setText(tr("Удалить информацию о выбраннм клиенте и всех его исследованиях?"));
-    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    msgBox.setDefaultButton(QMessageBox::No);
-
-    if(msgBox.exec() == QMessageBox::Yes)
-    {
-        patientsModel->removeRow(ui->patientsView->currentIndex().row());
-        patientsModel->select();
-        studiesModel->select();
-    }
+    qApp->restoreOverrideCursor();
 }
 
 //Добавляет исследование
@@ -153,6 +145,29 @@ void MainWindow::on_removeStudyButton_clicked()
     if(msgBox.exec() == QMessageBox::Yes)
     {
         studiesModel->removeRow(ui->studiesView->currentIndex().row());
+        studiesModel->select();
+    }
+}
+
+//Добавляет клиента
+void MainWindow::on_addPatientButton_clicked()
+{
+
+}
+
+//Удаляет выбранного клиента
+void MainWindow::on_removePatientButton_clicked()
+{
+    QMessageBox msgBox(ui->patientsView);
+    msgBox.setIcon(QMessageBox::Question);
+    msgBox.setText(tr("Удалить информацию о выбраннм клиенте и всех его исследованиях?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    if(msgBox.exec() == QMessageBox::Yes)
+    {
+        patientsModel->removeRow(ui->patientsView->currentIndex().row());
+        patientsModel->select();
         studiesModel->select();
     }
 }

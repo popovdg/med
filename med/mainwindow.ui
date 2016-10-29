@@ -67,7 +67,7 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_7">
            <item>
-            <widget class="QPushButton" name="addPersonButton">
+            <widget class="QPushButton" name="addPatientButton">
              <property name="text">
               <string>Добавить...</string>
              </property>
@@ -78,7 +78,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="removePersonButton">
+            <widget class="QPushButton" name="removePatientButton">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -109,7 +109,20 @@
          <item>
           <layout class="QVBoxLayout" name="patientsLayout">
            <item>
-            <widget class="QTableView" name="patientsView"/>
+            <widget class="QTableView" name="patientsView">
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectRows</enum>
+             </property>
+             <property name="sortingEnabled">
+              <bool>true</bool>
+             </property>
+             <attribute name="horizontalHeaderStretchLastSection">
+              <bool>true</bool>
+             </attribute>
+            </widget>
            </item>
           </layout>
          </item>
@@ -170,7 +183,20 @@
          <item>
           <layout class="QHBoxLayout" name="studiesLayout">
            <item>
-            <widget class="QTableView" name="studiesView"/>
+            <widget class="QTableView" name="studiesView">
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectRows</enum>
+             </property>
+             <property name="sortingEnabled">
+              <bool>true</bool>
+             </property>
+             <attribute name="horizontalHeaderStretchLastSection">
+              <bool>true</bool>
+             </attribute>
+            </widget>
            </item>
           </layout>
          </item>
@@ -208,5 +234,7 @@
   <slot>onPatientSelectionChanged(QitemSelection,QItemSelection)</slot>
   <slot>search(QString)</slot>
   <slot>onStudySelectionChanged(QItemSelection,QItemSelection)</slot>
+  <slot>onPatientsReset()</slot>
+  <slot>onStudiesReset()</slot>
  </slots>
 </ui>
