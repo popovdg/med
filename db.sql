@@ -1,6 +1,6 @@
 create table if not exists patients
 (
-	id serial primary key,
+	id serial check(id != 0) primary key,
 	fio character varying not null,
 	dob date not null,
 	sex boolean,
