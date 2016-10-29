@@ -16,9 +16,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    patientsitemdelegate.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    patientsitemdelegate.h
 
 FORMS    += mainwindow.ui
 

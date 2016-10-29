@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "patientsitemdelegate.h"
+#include "studiesitemdelegate.h"
 #include <QSplitter>
 #include <QTableView>
 #include <QSqlDatabase>
@@ -45,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     patientsModel->setHeaderData(3, Qt::Horizontal, tr("Пол"));
     patientsModel->setHeaderData(4, Qt::Horizontal, tr("Вес"));
     patientsModel->setHeaderData(5, Qt::Horizontal, tr("Возраст"));
+    ui->patientsView->setItemDelegate(new PatientsItemDelegate(ui->patientsView));
     ui->patientsView->setModel(patientsModel);
     ui->patientsView->hideColumn(0);
 
@@ -98,7 +101,7 @@ void MainWindow::onStudySelectionChanged(const QItemSelection &selected, const Q
     ui->removeStudyButton->setDisabled(selected.indexes().empty());
 }
 
-//
+//Деактивирует кнопки при изменении модели клиентов
 void MainWindow::onPatientsReset()
 {
     ui->removePatientButton->setEnabled(ui->patientsView->selectionModel()->hasSelection());
@@ -106,7 +109,7 @@ void MainWindow::onPatientsReset()
     if(!ui->patientsView->selectionModel()->hasSelection()) studiesModel->setFilter("patient=0");
 }
 
-//
+//Деактивирует кнопки при изменении модели исследований
 void MainWindow::onStudiesReset()
 {
     ui->removeStudyButton->setEnabled(ui->studiesView->selectionModel()->hasSelection());
@@ -133,6 +136,12 @@ void MainWindow::on_addStudyButton_clicked()
 
 }
 
+//Добавляет клиента
+void MainWindow::on_addPatientButton_clicked()
+{
+
+}
+
 //Удаляет выбранное исследование
 void MainWindow::on_removeStudyButton_clicked()
 {
@@ -147,12 +156,6 @@ void MainWindow::on_removeStudyButton_clicked()
         studiesModel->removeRow(ui->studiesView->currentIndex().row());
         studiesModel->select();
     }
-}
-
-//Добавляет клиента
-void MainWindow::on_addPatientButton_clicked()
-{
-
 }
 
 //Удаляет выбранного клиента

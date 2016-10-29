@@ -24,13 +24,13 @@ private slots:
     /** Фильтрует исследования для выбранного клиента */
     void onPatientSelectionChanged(const QItemSelection &, const QItemSelection &);
 
-    /** Активирует кнопку удаления исследования */
+    /** Активирует кнопки при изменении текущего клиента */
     void onStudySelectionChanged(const QItemSelection &, const QItemSelection &);
 
-    /**  */
+    /** Деактивирует кнопки при изменении модели клиентов */
     void onPatientsReset();
 
-    /**  */
+    /** Деактивирует кнопки при изменении модели исследований */
     void onStudiesReset();
 
     /** Фильтрует клиентов по ФИО */
