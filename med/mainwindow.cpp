@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     patientsModel->setHeaderData(5, Qt::Horizontal, tr("Возраст"));
     ui->patientsView->setModel(patientsModel);
     ui->patientsView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->patientsView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->patientsView->hideColumn(0);
     ui->patientsView->selectRow(0);
 
@@ -58,12 +59,20 @@ MainWindow::MainWindow(QWidget *parent) :
     studiesModel->setHeaderData(1, Qt::Horizontal, tr("Тип исследования"));
     studiesModel->setHeaderData(2, Qt::Horizontal, tr("Дата исследования"));
     ui->studiesView->setModel(studiesModel);
+    ui->studiesView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->studiesView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->studiesView->hideColumn(0);
 
     connect(
       ui->patientsView->selectionModel(),
-      SIGNAL(currentRowChanged(const QModelIndex &, const QModelIndex &)),
-      SLOT(select_Studies(const QModelIndex &, const QModelIndex &))
+      SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+      SLOT(onPatientSelectionChanged(QItemSelection,QItemSelection))
+     );
+
+    connect(
+      ui->studiesView->selectionModel(),
+      SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+      SLOT(onStudySelectionChanged(const QItemSelection &, const QItemSelection &))
      );
 }
 
@@ -74,13 +83,20 @@ MainWindow::~MainWindow()
 }
 
 //Фильтрует исследования для выбранного клиента
-void MainWindow::select_Studies(const QModelIndex &index, const QModelIndex &)
+void MainWindow::onPatientSelectionChanged(const QItemSelection &selected, const QItemSelection &)
 {
     studiesModel->setFilter("patient="
-                            + (index.isValid() ? index.sibling(index.row(), 0).data().toString()
-                                               : QString::number(0)));
-    ui->removePersonButton->setEnabled(index.isValid());
-    ui->addStudyButton->setEnabled(index.isValid());
+                            + (selected.indexes().empty()
+                               ? QString::number(0)
+                               : selected.indexes().at(0).data().toString()));
+    ui->removePersonButton->setDisabled(selected.indexes().empty());
+    ui->addStudyButton->setDisabled(selected.indexes().empty());
+}
+
+//
+void MainWindow::onStudySelectionChanged(const QItemSelection &selected, const QItemSelection &)
+{
+    ui->removeStudyButton->setDisabled(selected.indexes().empty());
 }
 
 //Фильтрует клиентов по ФИО
@@ -99,6 +115,7 @@ void MainWindow::on_refershButton_clicked()
 //Добавляет клиента
 void MainWindow::on_addPersonButton_clicked()
 {
+
 }
 
 //Удаляет выбранного клиента
@@ -106,7 +123,7 @@ void MainWindow::on_removePersonButton_clicked()
 {
     QMessageBox msgBox(ui->patientsView);
     msgBox.setIcon(QMessageBox::Question);
-    msgBox.setText(tr("Вы уверены, что хотите удалить выбранного клиента?"));
+    msgBox.setText(tr("Удалить информацию о выбраннм клиенте и всех его исследованиях?"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
 
@@ -114,6 +131,7 @@ void MainWindow::on_removePersonButton_clicked()
     {
         patientsModel->removeRow(ui->patientsView->currentIndex().row());
         patientsModel->select();
+        studiesModel->select();
     }
 }
 
@@ -128,7 +146,7 @@ void MainWindow::on_removeStudyButton_clicked()
 {
     QMessageBox msgBox(ui->patientsView);
     msgBox.setIcon(QMessageBox::Question);
-    msgBox.setText(tr("Вы уверены, что хотите удалить выбранное исследование?"));
+    msgBox.setText(tr("Удалить выбранное исследование?"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
 

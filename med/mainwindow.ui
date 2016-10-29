@@ -79,6 +79,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="removePersonButton">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Удалить</string>
              </property>
@@ -137,6 +140,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="removeStudyButton">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Удалить</string>
              </property>
@@ -199,7 +205,8 @@
   </connection>
  </connections>
  <slots>
-  <slot>select_Studies(QModelIndex,QModelInex)</slot>
+  <slot>onPatientSelectionChanged(QitemSelection,QItemSelection)</slot>
   <slot>search(QString)</slot>
+  <slot>onStudySelectionChanged(QItemSelection,QItemSelection)</slot>
  </slots>
 </ui>

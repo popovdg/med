@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QSqlTableModel>
+#include <QItemSelection>
 
 namespace Ui {
 class MainWindow;
@@ -21,10 +22,13 @@ public:
 
 private slots:
     /** Фильтрует исследования для выбранного клиента */
-    void select_Studies(const QModelIndex &, const QModelIndex &);
+    void onPatientSelectionChanged(const QItemSelection &, const QItemSelection &);
+
+    /**  */
+    void onStudySelectionChanged(const QItemSelection &, const QItemSelection &);
 
     /** Фильтрует клиентов по ФИО */
-    void search(const QString&);
+    void search(const QString &);
 
     /** Обновляет данные из БД */
     void on_refershButton_clicked();
