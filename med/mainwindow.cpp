@@ -24,13 +24,15 @@ MainWindow::MainWindow(QWidget *parent) :
     db.open();
 
     patientsModel = new QSqlTableModel(ui->patientsView, db);
-    patientsModel->setTable("patients");
+    patientsModel->setTable("patients_view");
     patientsModel->setEditStrategy(QSqlTableModel::OnRowChange);
+    patientsModel->setSort(1, Qt::AscendingOrder);
     patientsModel->select();
     patientsModel->setHeaderData(1, Qt::Horizontal, tr("ФИО"));
     patientsModel->setHeaderData(2, Qt::Horizontal, tr("Дата рождения"));
     patientsModel->setHeaderData(3, Qt::Horizontal, tr("Пол"));
     patientsModel->setHeaderData(4, Qt::Horizontal, tr("Вес"));
+    patientsModel->setHeaderData(5, Qt::Horizontal, tr("Возраст"));
     ui->patientsView->setModel(patientsModel);
     ui->patientsView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->patientsView->hideColumn(0);
@@ -39,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     studiesModel = new QSqlTableModel(ui->studiesView, db);
     studiesModel->setTable("studies");
     studiesModel->setEditStrategy(QSqlTableModel::OnRowChange);
+    studiesModel->setSort(2, Qt::DescendingOrder);
     studiesModel->select();
     studiesModel->setHeaderData(1, Qt::Horizontal, tr("Тип исследования"));
     studiesModel->setHeaderData(2, Qt::Horizontal, tr("Дата исследования"));

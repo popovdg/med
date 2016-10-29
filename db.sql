@@ -2,15 +2,16 @@ create table if not exists patients
 (
 	id serial primary key,
 	fio character varying not null,
-	date_of_birth date not null,
+	dob date not null,
 	sex boolean,
 	weight int,
-	unique (fio, date_of_birth)
+	unique (fio, dob)
 );
+create or replace view patients_view as select *, date_part('year', age(dob)) as age from patients;
 
 comment on column patients.id is 'Идентификатор пациента';
 comment on column patients.fio is 'Фамилмия Имя Отчество';
-comment on column patients.date_of_birth is 'Дата рождения';
+comment on column patients.dob is 'Дата рождения';
 comment on column patients.sex is 'Пол (true - мужской, false - женский)';
 comment on column patients.weight is 'Вес';
 
