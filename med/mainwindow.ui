@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>724</width>
-    <height>721</height>
+    <height>617</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>med</string>
+   <string>Медицинские исследования</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -44,7 +44,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>ФИО:</string>
+         <string>Поиск (ФИО):</string>
         </property>
         <property name="buddy">
          <cstring>searchEdit</cstring>
@@ -53,20 +53,6 @@
       </item>
       <item>
        <widget class="QLineEdit" name="searchEdit"/>
-      </item>
-      <item>
-       <widget class="QPushButton" name="searchButton">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Поиск</string>
-        </property>
-        <property name="icon">
-         <iconset resource="icons.qrc">
-          <normaloff>:/icons/icons/search.png</normaloff>:/icons/icons/search.png</iconset>
-        </property>
-       </widget>
       </item>
      </layout>
     </item>
@@ -81,7 +67,7 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_7">
            <item>
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="addPersonButton">
              <property name="text">
               <string>Добавить...</string>
              </property>
@@ -92,7 +78,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_4">
+            <widget class="QPushButton" name="removePersonButton">
              <property name="text">
               <string>Удалить</string>
              </property>
@@ -136,7 +122,7 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_8">
            <item>
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QPushButton" name="addStudyButton">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -150,7 +136,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_3">
+            <widget class="QPushButton" name="removeStudyButton">
              <property name="text">
               <string>Удалить</string>
              </property>
@@ -194,5 +180,26 @@
  <resources>
   <include location="icons.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>searchEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>search(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>519</x>
+     <y>25</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>430</x>
+     <y>41</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>select_Studies(QModelIndex,QModelInex)</slot>
+  <slot>search(QString)</slot>
+ </slots>
 </ui>

@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QSqlError>
 
+//Конструктор
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -19,9 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableLayout->addWidget(splitter);
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
-    db.setPort(5433);
     db.setDatabaseName("med");
-    bool ok = db.open();
+    db.open();
 
     patientsModel = new QSqlTableModel(ui->patientsView, db);
     patientsModel->setTable("patients");
@@ -32,7 +32,9 @@ MainWindow::MainWindow(QWidget *parent) :
     patientsModel->setHeaderData(3, Qt::Horizontal, tr("Пол"));
     patientsModel->setHeaderData(4, Qt::Horizontal, tr("Вес"));
     ui->patientsView->setModel(patientsModel);
+    ui->patientsView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->patientsView->hideColumn(0);
+    ui->patientsView->selectRow(0);
 
     studiesModel = new QSqlTableModel(ui->studiesView, db);
     studiesModel->setTable("studies");
@@ -42,9 +44,61 @@ MainWindow::MainWindow(QWidget *parent) :
     studiesModel->setHeaderData(2, Qt::Horizontal, tr("Дата исследования"));
     ui->studiesView->setModel(studiesModel);
     ui->studiesView->hideColumn(0);
+
+    connect(
+      ui->patientsView->selectionModel(),
+      SIGNAL(currentRowChanged(const QModelIndex &, const QModelIndex &)),
+      SLOT(select_Studies(const QModelIndex &, const QModelIndex &))
+     );
 }
 
+//Деструктор
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+//Фильтрует исследования для выбранного клиента
+void MainWindow::select_Studies(const QModelIndex &index, const QModelIndex &)
+{
+    studiesModel->setFilter("patient="
+                            + (index.isValid() ? index.sibling(index.row(), 0).data().toString()
+                                               : QString::number(0)));
+}
+
+//Фильтрует клиентов по ФИО
+void MainWindow::search(const QString & string)
+{
+    patientsModel->setFilter(QString("fio ilike '%%1%'").arg(string));
+}
+
+//Обновляет данные из БД
+void MainWindow::on_refershButton_clicked()
+{
+    patientsModel->select();
+    studiesModel->select();
+}
+
+//Добавляет клиента
+void MainWindow::on_addPersonButton_clicked()
+{
+
+}
+
+//Удаляет выбранного клиента
+void MainWindow::on_removePersonButton_clicked()
+{
+
+}
+
+//Добавляет исследование
+void MainWindow::on_addStudyButton_clicked()
+{
+
+}
+
+//Удаляет выбранное исследование
+void MainWindow::on_removeStudyButton_clicked()
+{
+
 }
