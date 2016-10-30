@@ -17,12 +17,18 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    patientsitemdelegate.cpp
+    patientsitemdelegate.cpp \
+    addpatientdialog.cpp \
+    addstudydialog.cpp
 
 HEADERS  += mainwindow.h \
-    patientsitemdelegate.h
+    patientsitemdelegate.h \
+    addpatientdialog.h \
+    addstudydialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    addpatientdialog.ui \
+    addstudydialog.ui
 
 RESOURCES += \
     icons.qrc

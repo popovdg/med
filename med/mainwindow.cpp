@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     patientsModel = new QSqlTableModel(ui->patientsView, db);
     patientsModel->setTable("patients_view");
-    patientsModel->setEditStrategy(QSqlTableModel::OnRowChange);
+    patientsModel->setEditStrategy(QSqlTableModel::OnFieldChange);
     patientsModel->setSort(1, Qt::AscendingOrder);
     patientsModel->select();
     patientsModel->setHeaderData(1, Qt::Horizontal, tr("ФИО"));
@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     studiesModel = new QSqlTableModel(ui->studiesView, db);
     studiesModel->setTable("studies");
-    studiesModel->setEditStrategy(QSqlTableModel::OnRowChange);
+    studiesModel->setEditStrategy(QSqlTableModel::OnFieldChange);
     studiesModel->setSort(2, Qt::DescendingOrder);
     studiesModel->setFilter("patient=0");
     studiesModel->select();
