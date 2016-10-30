@@ -15,8 +15,10 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+
     /** Конструктор */
     explicit MainWindow(QWidget *parent = 0);
+
     /** Деструктор */
     ~MainWindow();
 

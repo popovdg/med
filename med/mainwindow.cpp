@@ -132,7 +132,10 @@ void MainWindow::on_addPatientButton_clicked()
     AddPatientDialog dlg(patientsModel, this);
     if(dlg.exec()) for(int i = 0; i < ui->patientsView->model()->rowCount(); ++i)
         if(ui->patientsView->model()->index(i, 0).data().toInt() == dlg.getId())
+        {
             ui->patientsView->selectRow(i);
+            ui->patientsView->scrollTo(ui->patientsView->model()->index(i, 0));
+        }
 }
 
 //Добавляет исследование
