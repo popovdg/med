@@ -1,4 +1,5 @@
-create table if not exists patients
+drop table patients cascade;
+create table patients
 (
 	id serial check(id != 0) primary key,
 	fio character varying not null,
@@ -15,7 +16,8 @@ comment on column patients.dob is 'Дата рождения';
 comment on column patients.sex is 'Пол (true - мужской, false - женский)';
 comment on column patients.weight is 'Вес';
 
-create table if not exists studies
+drop table studies;
+create table studies
 (
 	patient int not null references patients (id) match simple on update cascade on delete cascade,
 	type character varying not null,

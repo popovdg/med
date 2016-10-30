@@ -16,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
-    db.setDatabaseName("med");
     bool ok = db.open();
     if(!ok)
     {
