@@ -4,9 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
-QT       += sql
-QMAKE_LFLAGS += -stdlib=libc++
+QT             += core gui
+QT             += sql
+QMAKE_LFLAGS   += -stdlib=libc++
 QMAKE_CXXFLAGS += -stdlib=libc++
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets

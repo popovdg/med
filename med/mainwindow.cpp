@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "patientsitemdelegate.h"
+#include "addpatientdialog.h"
+#include "addstudydialog.h"
 #include <QSplitter>
 #include <QTableView>
 #include <QSqlDatabase>
@@ -121,16 +123,18 @@ void MainWindow::on_refershButton_clicked()
     qApp->restoreOverrideCursor();
 }
 
-//Добавляет исследование
-void MainWindow::on_addStudyButton_clicked()
-{
-
-}
-
 //Добавляет клиента
 void MainWindow::on_addPatientButton_clicked()
 {
+    AddPatientDialog dlg;
+    dlg.exec();
+}
 
+//Добавляет исследование
+void MainWindow::on_addStudyButton_clicked()
+{
+    AddStudyDialog dlg;
+    dlg.exec();
 }
 
 //Удаляет выбранное исследование
