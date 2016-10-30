@@ -188,7 +188,8 @@ void MainWindow::on_removePatientButton_clicked()
 void MainWindow::onPatientUpdate(int row, QSqlRecord &record)
 {
     QSqlQuery query(QString("select * from patients where fio = '%1' and dob = '%2'")
-                    .arg(record.value("fio").toString()).arg(record.value("dob").toDate().toString("yyyy-MM-dd")));
+                    .arg(record.value("fio").toString())
+                    .arg(record.value("dob").toDate().toString("yyyy-MM-dd")));
 
     if(query.size() > 0)
     {
@@ -204,7 +205,9 @@ void MainWindow::onPatientUpdate(int row, QSqlRecord &record)
 void MainWindow::onStudyUpdate(int row, QSqlRecord &record)
 {
     QSqlQuery query(QString("select * from studies where patient = %1 and type = '%2' and date = '%3'")
-                    .arg(record.value("patient").toInt()).arg(record.value("type").toString()).arg(record.value("date").toDate().toString("yyyy-MM-dd")));
+                    .arg(record.value("patient").toInt())
+                    .arg(record.value("type").toString())
+                    .arg(record.value("date").toDate().toString("yyyy-MM-dd")));
 
     if(query.size() > 0)
     {
