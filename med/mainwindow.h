@@ -53,6 +53,12 @@ private slots:
     /** Удаляет выбранного клиента */
     void on_removePatientButton_clicked();
 
+    /** Проверяет корректность данных клиента перед обновлением */
+    void onPatientUpdate(int, QSqlRecord &);
+
+    /** Проверяет корректность данных исследования перед обновлением */
+    void onStudyUpdate(int, QSqlRecord &);
+
 private:
     Ui::MainWindow *ui;
     QSqlTableModel *patientsModel; /**< Модель данных клиентов */

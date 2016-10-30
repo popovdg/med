@@ -7,7 +7,10 @@
 #include <QTableView>
 #include <QSqlDatabase>
 #include <QSqlError>
+#include <QSqlQuery>
+#include <QSqlRecord>
 #include <QMessageBox>
+#include <QDate>
 
 //Конструктор
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -72,6 +75,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(patientsModel, SIGNAL(modelReset()), SLOT(onPatientsReset()));
     connect(studiesModel, SIGNAL(modelReset()), SLOT(onStudiesReset()));
+    connect(patientsModel, SIGNAL(beforeUpdate(int, QSqlRecord &)), SLOT(onPatientUpdate(int, QSqlRecord &)));
+    connect(studiesModel, SIGNAL(beforeUpdate(int, QSqlRecord &)), SLOT(onStudyUpdate(int, QSqlRecord &)));
 }
 
 //Деструктор
@@ -176,5 +181,37 @@ void MainWindow::on_removePatientButton_clicked()
         patientsModel->removeRow(ui->patientsView->currentIndex().row());
         patientsModel->select();
         studiesModel->select();
+    }
+}
+
+//Проверяет корректность данных клиента перед обновлением
+void MainWindow::onPatientUpdate(int row, QSqlRecord &record)
+{
+    QSqlQuery query(QString("select * from patients where fio = '%1' and dob = '%2'")
+                    .arg(record.value("fio").toString()).arg(record.value("dob").toDate().toString("yyyy-MM-dd")));
+
+    if(query.size() > 0)
+    {
+        QMessageBox msgBox(this);
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText(tr("Данный пациент уже существует!"));
+        msgBox.exec();
+        patientsModel->revertRow(row);
+    }
+}
+
+//Проверяет корректность данных исследования перед обновлением
+void MainWindow::onStudyUpdate(int row, QSqlRecord &record)
+{
+    QSqlQuery query(QString("select * from studies where patient = %1 and type = '%2' and date = '%3'")
+                    .arg(record.value("patient").toInt()).arg(record.value("type").toString()).arg(record.value("date").toDate().toString("yyyy-MM-dd")));
+
+    if(query.size() > 0)
+    {
+        QMessageBox msgBox(this);
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText(tr("Данное исследование уже существует!"));
+        msgBox.exec();
+        studiesModel->revertRow(row);
     }
 }
