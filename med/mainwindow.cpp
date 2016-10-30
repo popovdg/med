@@ -4,17 +4,12 @@
 #include <QSplitter>
 #include <QTableView>
 #include <QSqlDatabase>
-#include <QDebug>
 #include <QSqlError>
 #include <QMessageBox>
 
 //Конструктор
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
-
     QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
     bool ok = db.open();
     if(!ok)
@@ -28,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
         exit(0);
     }
 
+    ui->setupUi(this);
     QSplitter *splitter = new QSplitter(this);
     splitter->setOrientation(Qt::Vertical);
     splitter->addWidget(ui->patientsBox);
