@@ -27,6 +27,7 @@ void AddPatientDialog::onDataChanged()
 //Сохраняет введённые данные
 void AddPatientDialog::on_addButton_clicked()
 {
+    QSqlDatabase().transaction();
     QSqlQuery query(QString("select * from patients where fio = '%1' and dob = '%2'")
                     .arg(ui->fioEdit->text()).arg(ui->dateEdit->date().toString("yyyy-MM-dd")));
 
@@ -37,6 +38,7 @@ void AddPatientDialog::on_addButton_clicked()
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.setText(tr("Данный пациент уже существует!"));
         msgBox.exec();
+        QSqlDatabase().commit();
     }
     else
     {
@@ -46,6 +48,7 @@ void AddPatientDialog::on_addButton_clicked()
                       .arg(ui->menButton->isChecked())
                       .arg(ui->weightBox->value())))
         {
+            QSqlDatabase().commit();
             patientsModel->select();
             accept();
         }
@@ -56,6 +59,7 @@ void AddPatientDialog::on_addButton_clicked()
             msgBox.setText(tr("Не удалось сохранить данные!"));
             msgBox.setDetailedText(query.lastError().text());
             msgBox.exec();
+            QSqlDatabase().commit();
         }
     }
 }
