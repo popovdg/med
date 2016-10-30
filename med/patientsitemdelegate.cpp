@@ -41,6 +41,15 @@ void PatientsItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *mod
 //Отображает информацию в ячейках таблицы
 void PatientsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    if(index.column() == 3) painter->drawText(option.rect, option.displayAlignment, index.data().toBool() ? tr("Мужской") : tr("Женский"));
-    else QStyledItemDelegate::paint(painter, option, index);
+    switch(index.column())
+    {
+    case 3: painter->drawText(option.rect, option.displayAlignment, index.data().toBool() ? tr("Мужской") : tr("Женский")); break;
+    case 5:
+    {
+        painter->fillRect(option.rect, Qt::lightGray);
+        QStyledItemDelegate::paint(painter, option, index);
+        break;
+    }
+    default: QStyledItemDelegate::paint(painter, option, index);
+    }
 }
