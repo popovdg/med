@@ -3,7 +3,7 @@
 
 #include <QStyledItemDelegate>
 
-/**  */
+/** Делегат элементов таблицы пациентов */
 class PatientsItemDelegate : public QStyledItemDelegate
 {
     Q_OBJECT

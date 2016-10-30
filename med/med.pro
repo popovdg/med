@@ -19,12 +19,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     patientsitemdelegate.cpp \
     addpatientdialog.cpp \
-    addstudydialog.cpp
+    addstudydialog.cpp \
+    studiesitemdelegate.cpp
 
 HEADERS  += mainwindow.h \
     patientsitemdelegate.h \
     addpatientdialog.h \
-    addstudydialog.h
+    addstudydialog.h \
+    studiesitemdelegate.h
 
 FORMS    += mainwindow.ui \
     addpatientdialog.ui \

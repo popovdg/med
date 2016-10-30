@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "patientsitemdelegate.h"
+#include "studiesitemdelegate.h"
 #include "addpatientdialog.h"
 #include "addstudydialog.h"
 #include <QSplitter>
@@ -58,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     studiesModel->select();
     studiesModel->setHeaderData(1, Qt::Horizontal, tr("Тип"));
     studiesModel->setHeaderData(2, Qt::Horizontal, tr("Дата"));
+    ui->studiesView->setItemDelegate(new StudiesItemDelegate(ui->studiesView));
     ui->studiesView->setModel(studiesModel);
     ui->studiesView->hideColumn(0);
 

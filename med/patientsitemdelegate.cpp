@@ -1,13 +1,22 @@
 #include "patientsitemdelegate.h"
 #include <QSpinBox>
 #include <QComboBox>
+#include <QDateEdit>
 #include <QPainter>
 
-//Конструктор
+//Создаёт редактор элемениов
 QWidget *PatientsItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     switch(index.column())
     {
+    case 2:
+    {
+        QDateEdit *dateEdit = new QDateEdit(parent);
+        dateEdit->setMaximumDate(QDate::currentDate());
+        dateEdit->setDate(index.data().toDate());
+        dateEdit->setCalendarPopup(true);
+        return dateEdit;
+    }
     case 3:
     {
         QComboBox *comboBox = new QComboBox(parent);
