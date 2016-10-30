@@ -75,12 +75,12 @@
         <string>Вес:</string>
        </property>
        <property name="buddy">
-        <cstring>spinBox</cstring>
+        <cstring>weightBox</cstring>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinBox">
+      <widget class="QSpinBox" name="weightBox">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -112,7 +112,7 @@
          <bool>true</bool>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
       </item>

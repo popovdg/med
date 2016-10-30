@@ -1,6 +1,7 @@
 #include "addpatientdialog.h"
 #include "ui_addpatientdialog.h"
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QMessageBox>
 
 //Конструктор
@@ -26,17 +27,35 @@ void AddPatientDialog::onDataChanged()
 //Сохраняет введённые данные
 void AddPatientDialog::on_addButton_clicked()
 {
-    ui->addButton->setDisabled(true);
-
     QSqlQuery query(QString("select * from patients where fio = '%1' and dob = '%2'")
                     .arg(ui->fioEdit->text()).arg(ui->dateEdit->date().toString("yyyy-MM-dd")));
 
     if(query.size() > 0)
     {
+        ui->addButton->setDisabled(true);
         QMessageBox msgBox(this);
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.setText(tr("Данный пациент уже существует!"));
         msgBox.exec();
     }
-    else accept();
+    else
+    {
+        if(query.exec(QString("insert into patients (fio, dob, sex, weight) values ('%1', '%2', '%3', %4)")
+                      .arg(ui->fioEdit->text())
+                      .arg(ui->dateEdit->date().toString("yyyy-MM-dd"))
+                      .arg(ui->menButton->isChecked())
+                      .arg(ui->weightBox->value())))
+        {
+            patientsModel->select();
+            accept();
+        }
+        else
+        {
+            QMessageBox msgBox(this);
+            msgBox.setIcon(QMessageBox::Critical);
+            msgBox.setText(tr("Не удалось сохранить данные!"));
+            msgBox.setDetailedText(query.lastError().text());
+            msgBox.exec();
+        }
+    }
 }

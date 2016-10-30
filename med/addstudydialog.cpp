@@ -1,6 +1,7 @@
 #include "addstudydialog.h"
 #include "ui_addstudydialog.h"
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QMessageBox>
 
 //Конструктор
@@ -27,17 +28,32 @@ void AddStudyDialog::onDataChanged()
 //Сохраняет введённые данные
 void AddStudyDialog::on_addButton_clicked()
 {
-    ui->addButton->setDisabled(true);
-
     QSqlQuery query(QString("select * from studies where patient = %1 and type = '%2' and date = '%3'")
                     .arg(patient).arg(ui->typeEdit->text()).arg(ui->dateEdit->date().toString("yyyy-MM-dd")));
 
     if(query.size() > 0)
     {
+        ui->addButton->setDisabled(true);
         QMessageBox msgBox(this);
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.setText(tr("Данное исследование уже существует!"));
         msgBox.exec();
     }
-    else accept();
+    else
+    {
+        if(query.exec(QString("insert into studies (patient, type, date) values(%1, '%2', '%3')")
+                       .arg(patient).arg(ui->typeEdit->text()).arg(ui->dateEdit->date().toString("yyyy-MM-dd"))))
+        {
+            studiesModel->select();
+            accept();
+        }
+        else
+        {
+            QMessageBox msgBox(this);
+            msgBox.setIcon(QMessageBox::Critical);
+            msgBox.setText(tr("Не удалось сохранить данные!"));
+            msgBox.setDetailedText(query.lastError().text());
+            msgBox.exec();
+        }
+    }
 }
