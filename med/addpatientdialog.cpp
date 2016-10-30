@@ -6,7 +6,7 @@
 
 //Конструктор
 AddPatientDialog::AddPatientDialog(QSqlTableModel *sqlTableModel, QWidget *parent) :
-    QDialog(parent), ui(new Ui::AddPatientDialog), patientsModel(sqlTableModel)
+    QDialog(parent), ui(new Ui::AddPatientDialog), patientsModel(sqlTableModel), id(0)
 {
     ui->setupUi(this);
     ui->dateEdit->setMaximumDate(QDate::currentDate());
@@ -42,13 +42,14 @@ void AddPatientDialog::on_addButton_clicked()
     }
     else
     {
-        if(query.exec(QString("insert into patients (fio, dob, sex, weight) values ('%1', '%2', '%3', %4)")
+        if(query.exec(QString("insert into patients (fio, dob, sex, weight) values ('%1', '%2', '%3', %4) returning id")
                       .arg(ui->fioEdit->text())
                       .arg(ui->dateEdit->date().toString("yyyy-MM-dd"))
                       .arg(ui->menButton->isChecked())
                       .arg(ui->weightBox->value())))
         {
             QSqlDatabase().commit();
+            if(query.next()) id = query.value(0).toInt();
             patientsModel->select();
             accept();
         }

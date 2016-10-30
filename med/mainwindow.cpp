@@ -60,8 +60,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(
       ui->patientsView->selectionModel(),
-      SIGNAL(currentRowChanged(const QModelIndex &, const QModelIndex &)),
-      SLOT(onCurrentPatientChanged(const QModelIndex &, const QModelIndex &))
+      SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+      SLOT(onPatientSelectionChanged(const QItemSelection &, const QItemSelection&))
      );
 
     connect(
@@ -81,11 +81,14 @@ MainWindow::~MainWindow()
 }
 
 //Фильтрует исследования для выбранного клиента
-void MainWindow::onCurrentPatientChanged(const QModelIndex &current, const QModelIndex &)
+void MainWindow::onPatientSelectionChanged(const QItemSelection &selected, const QItemSelection &)
 {
-    studiesModel->setFilter("patient=" + current.sibling(current.row(), 0).data().toString());
-    ui->removePatientButton->setEnabled(current.isValid());
-    ui->addStudyButton->setEnabled(current.isValid());
+    studiesModel->setFilter("patient="
+                                + (selected.indexes().empty()
+                                   ? QString::number(0)
+                                   : selected.indexes().at(0).data().toString()));
+        ui->removePatientButton->setDisabled(selected.indexes().empty());
+        ui->addStudyButton->setDisabled(selected.indexes().empty());
 }
 
 //Активирует кнопку удаления исследования
@@ -126,7 +129,10 @@ void MainWindow::on_refershButton_clicked()
 //Добавляет клиента
 void MainWindow::on_addPatientButton_clicked()
 {
-    AddPatientDialog(patientsModel, this).exec();
+    AddPatientDialog dlg(patientsModel, this);
+    if(dlg.exec()) for(int i = 0; i < ui->patientsView->model()->rowCount(); ++i)
+        if(ui->patientsView->model()->index(i, 0).data().toInt() == dlg.getId())
+            ui->patientsView->selectRow(i);
 }
 
 //Добавляет исследование

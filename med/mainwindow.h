@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QSqlTableModel>
+#include <QItemSelection>
 
 namespace Ui {
 class MainWindow;
@@ -21,7 +22,7 @@ public:
 
 private slots:
     /** Фильтрует исследования для выбранного клиента */
-    void onCurrentPatientChanged(const QModelIndex &, const QModelIndex &);
+    void onPatientSelectionChanged(const QItemSelection &, const QItemSelection &);
 
     /** Активирует кнопки при изменении текущего клиента */
     void onCurrentStudyChanged(const QModelIndex &, const QModelIndex &);

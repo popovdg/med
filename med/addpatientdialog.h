@@ -21,6 +21,9 @@ public:
     /** Деструктор */
     ~AddPatientDialog();
 
+    /** Возвращает идентификатор добавленного клиента */
+    inline int getId() const {return id;}
+
 private slots:
 
     /** Активирует кнопку "Добавить", если введена информация */
@@ -32,6 +35,7 @@ private slots:
 private:
     Ui::AddPatientDialog *ui;
     QSqlTableModel *patientsModel; /**< Модель данных клиентов */
+    int id; /**< Идентификатор добавленного клиента */
 };
 
 #endif // ADDPATIENTDIALOG_H
