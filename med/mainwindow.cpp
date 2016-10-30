@@ -187,6 +187,17 @@ void MainWindow::on_removePatientButton_clicked()
 //Проверяет корректность данных клиента перед обновлением
 void MainWindow::onPatientUpdate(int row, QSqlRecord &record)
 {
+    if(record.value("fio").toString().isEmpty())
+    {
+        QMessageBox msgBox(this);
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText(tr("Не заполнено имя клиента!"));
+        msgBox.setInformativeText("Данные не сохранены.");
+        msgBox.exec();
+        patientsModel->revertRow(row);
+        return;
+    }
+
     QSqlQuery query(QString("select * from patients where fio = '%1' and dob = '%2'")
                     .arg(record.value("fio").toString())
                     .arg(record.value("dob").toDate().toString("yyyy-MM-dd")));
@@ -204,6 +215,17 @@ void MainWindow::onPatientUpdate(int row, QSqlRecord &record)
 //Проверяет корректность данных исследования перед обновлением
 void MainWindow::onStudyUpdate(int row, QSqlRecord &record)
 {
+    if(record.value("type").toString().isEmpty())
+    {
+        QMessageBox msgBox(this);
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText(tr("Не заполнен тип исследования!"));
+        msgBox.setInformativeText("Данные не сохранены.");
+        msgBox.exec();
+        studiesModel->revertRow(row);
+        return;
+    }
+
     QSqlQuery query(QString("select * from studies where patient = %1 and type = '%2' and date = '%3'")
                     .arg(record.value("patient").toInt())
                     .arg(record.value("type").toString())
