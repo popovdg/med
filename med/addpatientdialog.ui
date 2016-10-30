@@ -194,22 +194,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>addButton</sender>
-   <signal>clicked()</signal>
-   <receiver>AddPatientDialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>304</x>
-     <y>228</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>240</x>
-     <y>200</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>fioEdit</sender>
    <signal>textChanged(QString)</signal>
    <receiver>AddPatientDialog</receiver>
@@ -232,12 +216,12 @@
    <slot>onDataChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>229</x>
-     <y>57</y>
+     <x>233</x>
+     <y>58</y>
     </hint>
     <hint type="destinationlabel">
-     <x>165</x>
-     <y>40</y>
+     <x>154</x>
+     <y>79</y>
     </hint>
    </hints>
   </connection>

@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QSqlTableModel>
-#include <QItemSelection>
 
 namespace Ui {
 class MainWindow;

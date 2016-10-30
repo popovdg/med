@@ -126,22 +126,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>addButton</sender>
-   <signal>clicked()</signal>
-   <receiver>AddStudyDialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>165</x>
-     <y>109</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>212</x>
-     <y>82</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>typeEdit</sender>
    <signal>textChanged(QString)</signal>
    <receiver>AddStudyDialog</receiver>
@@ -164,12 +148,12 @@
    <slot>onDataChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>177</x>
-     <y>60</y>
+     <x>142</x>
+     <y>59</y>
     </hint>
     <hint type="destinationlabel">
-     <x>114</x>
-     <y>76</y>
+     <x>164</x>
+     <y>81</y>
     </hint>
    </hints>
   </connection>

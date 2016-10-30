@@ -126,15 +126,15 @@ void MainWindow::on_refershButton_clicked()
 //Добавляет клиента
 void MainWindow::on_addPatientButton_clicked()
 {
-    AddPatientDialog dlg;
-    dlg.exec();
+    AddPatientDialog(patientsModel, this).exec();
 }
 
 //Добавляет исследование
 void MainWindow::on_addStudyButton_clicked()
 {
-    AddStudyDialog dlg;
-    dlg.exec();
+    AddStudyDialog(ui->patientsView->currentIndex()
+                   .sibling(ui->patientsView->currentIndex().row(), 0)
+                   .data().toInt(), studiesModel, this).exec();
 }
 
 //Удаляет выбранное исследование

@@ -2,6 +2,7 @@
 #define ADDPATIENTDIALOG_H
 
 #include <QDialog>
+#include <QSqlTableModel>
 
 namespace Ui {
 class AddPatientDialog;
@@ -15,18 +16,22 @@ class AddPatientDialog : public QDialog
 public:
 
     /** Конструктор */
-    explicit AddPatientDialog(QWidget *parent = 0);
+    explicit AddPatientDialog(QSqlTableModel *, QWidget * = 0);
 
     /** Деструктор */
     ~AddPatientDialog();
 
 private slots:
 
-    /** Активирует кнопку "Добавить", если информация верна */
+    /** Активирует кнопку "Добавить", если введена информация */
     void onDataChanged();
+
+    /** Сохраняет введённые данные */
+    void on_addButton_clicked();
 
 private:
     Ui::AddPatientDialog *ui;
+    QSqlTableModel *patientsModel; /**< Модель данных клиентов */
 };
 
 #endif // ADDPATIENTDIALOG_H
