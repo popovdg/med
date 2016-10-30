@@ -1,9 +1,9 @@
 drop table patients cascade;
 create table patients
 (
-	id serial check(id != 0) primary key,
+	id serial check (id != 0) primary key,
 	fio character varying not null,
-	dob date not null,
+	dob date not null check (dob < CURRENT_DATE),
 	sex boolean,
 	weight int check (weight > 0),
 	unique (fio, dob)
