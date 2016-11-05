@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSqlTableModel>
 #include <QItemSelection>
+#include <QSortFilterProxyModel>
 
 namespace Ui {
 class MainWindow;
@@ -61,6 +62,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QSortFilterProxyModel *patientsFilterModel; /**< Модель фильтрации клиентов */
     QSqlTableModel *patientsModel; /**< Модель данных клиентов */
     QSqlTableModel *studiesModel; /**< Модель данных исследований */
 };

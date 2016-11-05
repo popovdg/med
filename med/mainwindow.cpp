@@ -47,8 +47,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     patientsModel->setHeaderData(3, Qt::Horizontal, tr("Пол"));
     patientsModel->setHeaderData(4, Qt::Horizontal, tr("Вес, кг"));
     patientsModel->setHeaderData(5, Qt::Horizontal, tr("Количество полных лет"));
+
+    patientsFilterModel = new QSortFilterProxyModel(patientsModel);
+    patientsFilterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    patientsFilterModel->setSourceModel(patientsModel);
+    patientsFilterModel->setFilterKeyColumn(1);
     ui->patientsView->setItemDelegate(new PatientsItemDelegate(ui->patientsView));
-    ui->patientsView->setModel(patientsModel);
+    ui->patientsView->setModel(patientsFilterModel);
     ui->patientsView->hideColumn(0);
 
     studiesModel = new QSqlTableModel(ui->studiesView, db);
@@ -75,7 +80,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
       SLOT(onCurrentStudyChanged(const QModelIndex &, const QModelIndex &))
      );
 
-    connect(patientsModel, SIGNAL(modelReset()), SLOT(onPatientsReset()));
+    connect(patientsFilterModel, SIGNAL(modelReset()), SLOT(onPatientsReset()));
     connect(studiesModel, SIGNAL(modelReset()), SLOT(onStudiesReset()));
     connect(patientsModel, SIGNAL(beforeUpdate(int, QSqlRecord &)), SLOT(onPatientUpdate(int, QSqlRecord &)));
     connect(studiesModel, SIGNAL(beforeUpdate(int, QSqlRecord &)), SLOT(onStudyUpdate(int, QSqlRecord &)));
@@ -121,7 +126,7 @@ void MainWindow::onStudiesReset()
 //Фильтрует клиентов по ФИО
 void MainWindow::search(const QString & string)
 {
-    patientsModel->setFilter(QString("fio ilike '%%1%'").arg(string));
+    patientsFilterModel->setFilterWildcard(QString("*%1*").arg(string));
 }
 
 //Обновляет данные из БД
